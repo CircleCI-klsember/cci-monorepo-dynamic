@@ -24,7 +24,6 @@ jobs:
     docker:
       - image: alpine
     steps:
-      - common-say-hello
       - run: echo 'Jobs with `common-` prefix are intended to be shared among modules'
   api-run:
     executor: continuation/default
