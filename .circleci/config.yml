@@ -63,22 +63,18 @@ workflows:
             gateway/.* run-gateway-workflow true
       - common-pre
       - api-run:
-          when:
-            - << pipeline.parameters.run-api-workflow >>
+          when: << parameters.run-api-workflow >>
           requires:
             - common-pre
       - app-run:
-          when:
-            - << pipeline.parameters.run-app-workflow >>
+          when: << parameters.run-app-workflow >>
           requires:
             - common-pre
       - auth-run:
-          when:
-            - << pipeline.parameters.run-auth-workflow >>
+          when: << parameters.run-auth-workflow >>
           requires:
             - common-pre
       - gateway-run:
-          when:
-            - << pipeline.parameters.run-gateway-workflow >>
+          when: << parameters.run-gateway-workflow >>
           requires:
             - common-pre
