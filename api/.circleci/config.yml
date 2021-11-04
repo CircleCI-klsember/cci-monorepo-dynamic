@@ -1,0 +1,18 @@
+version: 2.1
+
+jobs:
+  api-build:
+    docker:
+      - image: alpine
+    steps:
+      - common-say-hello:
+          to: C
+      - run: echo 'Hello world from api package!'
+
+workflows:
+  api-workflow:
+    jobs:
+      - common-pre
+      - api-build:
+          requires:
+            - common-pre
