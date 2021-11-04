@@ -12,7 +12,4 @@ jobs:
 workflows:
   gateway-workflow:
     jobs:
-      - common-pre
-      - gateway-build:
-          requires:
-            - common-pre
+      - gateway-build

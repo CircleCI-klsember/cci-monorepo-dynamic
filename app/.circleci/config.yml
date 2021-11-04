@@ -12,7 +12,4 @@ jobs:
 workflows:
   app-workflow:
     jobs:
-      - common-pre
-      - app-build:
-          requires:
-            - common-pre
+      - app-build

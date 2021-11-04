@@ -11,8 +11,5 @@ jobs:
 
 workflows:
   auth-workflow:
-    jobs:
-      - common-pre
-      - auth-build:
-          requires:
-            - common-pre
+    jobs: 
+      - auth-build

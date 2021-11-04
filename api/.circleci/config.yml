@@ -12,7 +12,4 @@ jobs:
 workflows:
   api-workflow:
     jobs:
-      - common-pre
-      - api-build:
-          requires:
-            - common-pre
+      - api-build
