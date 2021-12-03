@@ -2,12 +2,13 @@ version: 2.1
 setup: true
 
 orbs:
+  continuation: circleci/continuation@0.2.0
   path-filtering: circleci/path-filtering@0.1.0
   
 jobs:
   Find_Target_branch:
     docker:
-      - image: cimg/base:2021.11
+      - image: cimg/python:3.8
     steps:
       - checkout
       - run:
@@ -20,18 +21,19 @@ jobs:
               echo ' export target_branch=develop' >> $BASH_ENV
             fi
       - run: echo $target_branch
-
-workflows:
-  setup:
-    jobs:
-      - Find_Target_branch
-      - path-filtering/filter:
-          base-revision: main
-          config-path: .circleci/dynamic_config.yml
+      - path-filtering/set-parameters:
+          base-revision: $target_branch
+          config-path: 
           mapping: |
             api/.* run-api-workflow true
             app/.* run-app-workflow true
             auth/.* run-auth-workflow true
             gateway/.* run-gateway-workflow true
-          requires:
-            - Find_Target_branch
+      - continuation/continue:
+          configuration_path: .circleci/dynamic_config.yml
+
+workflows:
+  setup:
+    jobs:
+      - Find_Target_branch
+
