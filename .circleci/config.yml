@@ -9,6 +9,7 @@ workflows:
   setup:
     jobs:
       - path-filtering/filter:
+          name: main-filtering
           base-revision: main
           config-path: .circleci/dynamic_config.yml
           mapping: |
@@ -16,3 +17,20 @@ workflows:
             app/.* run-app-workflow true
             auth/.* run-auth-workflow true
             gateway/.* run-gateway-workflow true
+          filters:
+            branches:
+              only:
+                - develop
+      - path-filtering/filter:
+          name: develop-filtering
+          base-revision: develop
+          config-path: .circleci/dynamic_config.yml
+          mapping: |
+            api/.* run-api-workflow true
+            app/.* run-app-workflow true
+            auth/.* run-auth-workflow true
+            gateway/.* run-gateway-workflow true
+          filters:
+            branches:
+              only:
+                - /feature/.*/
