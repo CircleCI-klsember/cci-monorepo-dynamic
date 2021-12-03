@@ -4,6 +4,7 @@ setup: true
 orbs:
   continuation: circleci/continuation@0.2.0
   path-filtering: circleci/path-filtering@0.1.0
+  ghprs: narrativescience/ghpr@1.1.6
   
 jobs:
   Find_Target_branch:
@@ -12,17 +13,10 @@ jobs:
     steps:
       - checkout
       - run:
-          name: Get Branch Name
-          command: |
-            if [[ -n ${CIRCLE_PR_NUMBER} ]]; then
-              echo 'export url="https://api.github.com/repos/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME/pulls/$CIRCLE_PR_NUMBER"' >> $BASH_ENV
-              echo 'export target_branch=$(curl -s -X GET -G $url -d access_token=$GITHUB_TOKEN | jq '.base.ref' | tr -d '"')' >> $BASH_ENV
-            else
-              echo ' export target_branch=develop' >> $BASH_ENV
-            fi
-      - run: echo $target_branch
+      - ghprs/get-pr-info
+      - run: echo $GITHUB_PR_BASE_BRANCH
       - path-filtering/set-parameters:
-          base-revision: $target_branch
+          base-revision: $GITHUB_PR_BASE_BRANCH
           mapping: |
             api/.* run-api-workflow true
             app/.* run-app-workflow true
