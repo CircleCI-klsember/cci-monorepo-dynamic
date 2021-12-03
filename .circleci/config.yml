@@ -8,7 +8,7 @@ orbs:
 jobs:
   Find_Target_branch:
     docker:
-      - image: cimg/base
+      - image: cimg/base:2021.11
     steps:
       - checkout
       - run:
