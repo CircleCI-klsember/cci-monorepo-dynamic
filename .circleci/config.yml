@@ -4,10 +4,29 @@ setup: true
 
 orbs:
   path-filtering: circleci/path-filtering@0.1.0
+  
+jobs:
+  Find_Target_branch:
+    docker:
+      - image: cimg/base
+    steps:
+      - checkout
+      - run:
+          name: Get Branch Name
+          command: |
+          if [[ -n ${CIRCLE_PR_NUMBER} ]]
+          then
+            url="https://api.github.com/repos/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME/pulls/$CIRCLE_PR_NUMBER"
+
+            target_branch=$(curl -s -X GET -G \
+            $url \
+            -d access_token=$GITHUB_TOKEN | jq '.base.ref' | tr -d '"')
+      - run: echo $target_branch
 
 workflows:
   setup:
     jobs:
+      - Find_Target_branch
       - path-filtering/filter:
           base-revision: main
           config-path: .circleci/dynamic_config.yml
@@ -16,3 +35,5 @@ workflows:
             app/.* run-app-workflow true
             auth/.* run-auth-workflow true
             gateway/.* run-gateway-workflow true
+          requires:
+            - Find_Target_branch
