@@ -23,7 +23,6 @@ jobs:
       - run: echo $target_branch
       - path-filtering/set-parameters:
           base-revision: $target_branch
-          config-path: 
           mapping: |
             api/.* run-api-workflow true
             app/.* run-app-workflow true
