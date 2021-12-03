@@ -15,9 +15,6 @@ jobs:
           command: |
             if [[ -n ${CIRCLE_PR_NUMBER} ]]; then
               echo 'export url="https://api.github.com/repos/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME/pulls/$CIRCLE_PR_NUMBER"' >> $BASH_ENV
-              echo ' export target_branch=$(curl -s -X GET -G \
-              $url \
-              -d access_token=$GITHUB_TOKEN | jq '.base.ref' | tr -d '"')' >> $BASH_ENV
             else
               echo ' export target_branch=develop' >> $BASH_ENV
             fi
