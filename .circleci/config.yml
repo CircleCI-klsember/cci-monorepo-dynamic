@@ -20,7 +20,9 @@ jobs:
               source $BASH_ENV
               echo $GITHUB_PR_URL
               echo ${GH_API_URL}
-              curl $GITHUB_PR_URL | jq '.base.ref' | tr -d '"'
+              echo 'export TARGET_BRANCH=$(curl $GH_API_URL | jq '.base.ref' | tr -d '"')' >> $BASH_ENV
+              source $BASH_ENV
+              echo $TARGET_BRANCH
             fi
 
 workflows:
