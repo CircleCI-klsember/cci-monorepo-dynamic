@@ -13,10 +13,12 @@ jobs:
       - run:
           name: Get Target Branch
           command: |
-            echo $CIRCLE_PULL_REQUEST
-            echo 'export GH_API_URL=$(echo $CIRCLE_PULL_REQUEST | sed 's/github.com/api.github.com/')' >> $BASH_ENV
-            source $BASH_ENV
-            echo ${GH_API_URL}
+            if [[ -n $CIRCLE_PULL_REQUEST ]]; then
+              echo $CIRCLE_PULL_REQUEST
+              echo 'export GH_API_URL=$(echo $CIRCLE_PULL_REQUEST | sed 's/github.com/api.github.com/')' >> $BASH_ENV
+              source $BASH_ENV
+              echo ${GH_API_URL}
+            fi
 
 workflows:
   setup:
