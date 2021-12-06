@@ -18,6 +18,7 @@ jobs:
             if [[ -n $CIRCLE_PULL_REQUEST ]]; then
               echo $CIRCLE_PULL_REQUEST
               echo 'export GH_API_URL=$(echo $CIRCLE_PULL_REQUEST | sed "s|github.com/klsember/$CIRCLE_PROJECT_REPONAME/pull|api.github.com/repos/klsember/$CIRCLE_PROJECT_REPONAME/pulls|g")' >>workspace/new-env-vars
+              source workspace/new-env-vars
               curl $GH_API_URL | jq '.base.ref' | tr -d '"' > Targetbranch.txt
               echo 'export TARGET_BRANCH=$(<Targetbranch.txt)' >>workspace/new-env-vars
             fi
