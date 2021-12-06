@@ -40,7 +40,7 @@ jobs:
       - run: cat workspace/new-env-vars >> $BASH_ENV
       - run: echo $TARGET_BRANCH
       - checkout
-      - set-parameters:
+      - path-filtering/set-parameters:
           base-revision: ${TARGET_BRANCH}
           mapping: |
             api/.* run-api-workflow true
