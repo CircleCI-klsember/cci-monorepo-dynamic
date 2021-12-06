@@ -17,9 +17,11 @@ jobs:
               echo $CIRCLE_PULL_REQUEST
               echo 'export GH_API_URL=$(echo $CIRCLE_PULL_REQUEST | sed "s|github.com/klsember/$CIRCLE_PROJECT_REPONAME/pull|api.github.com/repos/klsember/$CIRCLE_PROJECT_REPONAME/pulls|g")' >> $BASH_ENV
               echo 'export GITHUB_PR_URL="$GH_API_URL?access_token=$GITHUB_ACCESS_TOKEN"' >> $BASH_ENV
+              echo 'export target_branch=$(curl "$GITHUB_PR_URL" | ./jq '.base.ref' | tr -d '"')' >> $BASH_ENV
               source $BASH_ENV
               echo $GITHUB_PR_URL
               echo ${GH_API_URL}
+              echo $target_branch
             fi
 
 workflows:
