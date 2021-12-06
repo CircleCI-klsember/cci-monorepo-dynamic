@@ -5,9 +5,31 @@ setup: true
 orbs:
   path-filtering: circleci/path-filtering@0.1.1
 
+jobs:
+  Get_Target_Branch:
+    docker:
+      - image: cimg/base:stable
+    steps:
+      - run:
+          name: Get Target Branch
+          command: |
+            if [[ -n ${CIRCLE_PR_NUMBER} ]]
+            then
+            curl -L "https://github.com/stedolan/jq/releases/download/jq-1.5/jq-linux64" \
+              -o jq
+            chmod +x jq
+            url="https://api.github.com/repos/org/repo/pulls/$CIRCLE_PR_NUMBER?access_token=$GITHUB_ACCESS_TOKEN"
+            target_branch=$(
+              curl "$url" | ./jq '.base.ref' | tr -d '"'
+            )
+            echo $target_branch
+
 workflows:
   setup:
     jobs:
+      - Get_Target_Branch:
+          context:
+            - GitHub
       - path-filtering/filter:
           name: main-filtering
           base-revision: main
@@ -17,6 +39,8 @@ workflows:
             app/.* run-app-workflow true
             auth/.* run-auth-workflow true
             gateway/.* run-gateway-workflow true
+          requires:
+            - Get_Target_Branch
           filters:
             branches:
               only:
@@ -30,6 +54,8 @@ workflows:
             app/.* run-app-workflow true
             auth/.* run-auth-workflow true
             gateway/.* run-gateway-workflow true
+          requires:
+            - Get_Target_Branch
           filters:
             branches:
               only:
