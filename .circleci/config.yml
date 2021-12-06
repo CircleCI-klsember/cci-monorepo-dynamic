@@ -44,16 +44,16 @@ jobs:
           at: ~/workspace
       - run: cat /home/circleci/workspace/new-env-vars >> $BASH_ENV
       - run: echo $GHTARGET_BRANCH
-      #- checkout
-      #- path-filtering/set-parameters:
-      #    base-revision: ${TARGET_BRANCH}
-      #    mapping: |
-      #      api/.* run-api-workflow true
-      #      app/.* run-app-workflow true
-      #      auth/.* run-auth-workflow true
-      #      gateway/.* run-gateway-workflow true
-      #- continuation/continue:
-      #    configuration_path: .circleci/dynamic_config.yml
+      - checkout
+      - path-filtering/set-parameters:
+          base-revision: ${TARGET_BRANCH}
+          mapping: |
+            api/.* run-api-workflow true
+            app/.* run-app-workflow true
+            auth/.* run-auth-workflow true
+            gateway/.* run-gateway-workflow true
+      - continuation/continue:
+          configuration_path: .circleci/dynamic_config.yml
     
 
 workflows:
