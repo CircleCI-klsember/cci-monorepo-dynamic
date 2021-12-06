@@ -13,7 +13,8 @@ jobs:
       - run:
           name: Get Target Branch
           command: |
-            echo ${CIRCLE_PR_NUMBER}
+            echo $CIRCLE_PR_NUMBER
+            echo CIRCLE_PROJECT_REPONAME
             if [[ -n ${CIRCLE_PR_NUMBER} ]]; then
               echo 'export github_url="https://api.github.com/repos/klsember/$CIRCLE_PROJECT_REPONAME/pulls/$CIRCLE_PR_NUMBER?access_token=$GITHUB_ACCESS_TOKEN"' >> $BASH_ENV
               echo $github_url
