@@ -13,8 +13,10 @@ jobs:
       - run:
           name: Get Target Branch
           command: |
-            if [[ -n $CIRCLE_PULL_REQUEST ]]; then
-              export api_url=$(echo $CIRCLE_PULL_REQUEST | sed 's/github.com/api.github.com/')
+            echo 'export api_url=$(echo $CIRCLE_PULL_REQUEST | sed 's/github.com/api.github.com/')' >> $BASH_ENV
+            echo $api_url
+            //if [[ -n $CIRCLE_PULL_REQUEST ]]; then
+              //export api_url=$(echo $CIRCLE_PULL_REQUEST | sed 's/github.com/api.github.com/')
               //echo 'export api_url=$(echo $CIRCLE_PULL_REQUEST | sed 's/github.com/api.github.com/')' >> $BASH_ENV
               //echo 'export api_url=$(echo ${$CIRCLE_PULL_REQUEST/github.com/api.github.com})'
               //echo $api_url
@@ -22,7 +24,7 @@ jobs:
               //echo $github_url
               //export target_branch=$(curl "$url" | ./jq '.base.ref' | tr -d '"')
               //echo $target_branch
-            fi
+            //fi
 
 workflows:
   setup:
