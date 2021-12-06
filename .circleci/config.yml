@@ -4,6 +4,7 @@ setup: true
 
 orbs:
   path-filtering: circleci/path-filtering@0.1.1
+  continuation: circleci/continuation@0.2.0
 
 jobs:
   Get_Target_Branch:
@@ -29,6 +30,26 @@ jobs:
           root: workspace
           paths:
             - new-env-vars
+  pr-pathfiltering:
+    docker:
+      - image: cimg/python:3.8
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: ~/workspace
+      - run: cat workspace/new-env-vars >> $BASH_ENV
+      - run: echo $TARGET_BRANCH
+      - checkout
+      - set-parameters:
+          base-revision: ${TARGET_BRANCH}
+          mapping: |
+            api/.* run-api-workflow true
+            app/.* run-app-workflow true
+            auth/.* run-auth-workflow true
+            gateway/.* run-gateway-workflow true
+      - continuation/continue:
+          configuration_path: .circleci/dynamic_config.yml
+    
 
 workflows:
   setup:
@@ -36,35 +57,6 @@ workflows:
       - Get_Target_Branch:
           context:
             - GitHub
-      - path-filtering/filter:
-          name: main-filtering
-          base-revision: ${TARGET_BRANCH}
-          config-path: .circleci/dynamic_config.yml
-          workspace_path: workspace/new-env-vars
-          mapping: |
-            api/.* run-api-workflow true
-            app/.* run-app-workflow true
-            auth/.* run-auth-workflow true
-            gateway/.* run-gateway-workflow true
+      - pr-pathfiltering:
           requires:
             - Get_Target_Branch
-          filters:
-            branches:
-              only:
-                - develop
-      - path-filtering/filter:
-          name: develop-filtering
-          base-revision: ${TARGET_BRANCH}
-          config-path: .circleci/dynamic_config.yml
-          workspace_path: workspace/new-env-vars
-          mapping: |
-            api/.* run-api-workflow true
-            app/.* run-app-workflow true
-            auth/.* run-auth-workflow true
-            gateway/.* run-gateway-workflow true
-          requires:
-            - Get_Target_Branch
-          filters:
-            branches:
-              only:
-                - /feature/.*/
