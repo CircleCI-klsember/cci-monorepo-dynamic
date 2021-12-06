@@ -13,12 +13,12 @@ jobs:
       - run:
           name: Get Target Branch
           command: |
-            if [[ -n ${CIRCLE_PR_NUMBER} ]]
-            then
+            if [[ -n ${CIRCLE_PR_NUMBER} ]]; then
               export url="https://api.github.com/repos/org/repo/pulls/$CIRCLE_PR_NUMBER?access_token=$GITHUB_ACCESS_TOKEN"
               echo $url
-              export target_branch=$(curl "$url" | ./jq '.base.ref' | tr -d '"')
-            echo $target_branch
+              //export target_branch=$(curl "$url" | ./jq '.base.ref' | tr -d '"')
+              //echo $target_branch
+            fi
 
 workflows:
   setup:
