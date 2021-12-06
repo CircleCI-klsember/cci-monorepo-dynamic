@@ -20,7 +20,7 @@ jobs:
               source $BASH_ENV
               echo $GITHUB_PR_URL
               echo ${GH_API_URL}
-              curl $GH_API_URL | jq '.base.ref' | tr -d '"'
+              curl $GITHUB_PR_URL | jq '.base.ref' | tr -d '"'
             fi
 
 workflows:
