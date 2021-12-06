@@ -18,14 +18,19 @@ jobs:
           command: |
             if [[ -n $CIRCLE_PULL_REQUEST ]]; then
               echo $CIRCLE_PULL_REQUEST
-              echo 'export GH_API_URL=$(echo $CIRCLE_PULL_REQUEST | sed "s|github.com/klsember/$CIRCLE_PROJECT_REPONAME/pull|api.github.com/repos/klsember/$CIRCLE_PROJECT_REPONAME/pulls|g")' >>workspace/new-env-vars
-              source workspace/new-env-vars
+              echo 'export GH_API_URL=$(echo $CIRCLE_PULL_REQUEST | sed "s|github.com/klsember/$CIRCLE_PROJECT_REPONAME/pull|api.github.com/repos/klsember/$CIRCLE_PROJECT_REPONAME/pulls|g")' >> $BASH_ENV
+              source $BASH_ENV
               curl $GH_API_URL | jq '.base.ref' | tr -d '"' > Targetbranch.txt
-              echo 'export TARGET_BRANCH=$(<Targetbranch.txt)' >>workspace/new-env-vars
+              echo 'export TARGET_BRANCH=$(<Targetbranch.txt)' >> $BASH_ENV
             fi
+      - run: 
+          name: Exporting Variables
+          command: |
+            echo "export GHAPI_URL=$GH_API_URL" >> workspace/new-env-vars
+            echo "export GHTARGET_BRANCH=$TARGET_BRANCH" >> workspace/new-env-vars
       - run: cat workspace/new-env-vars >> $BASH_ENV
-      - run: echo ${GH_API_URL}
-      - run: echo ${TARGET_BRANCH}
+      - run: echo ${GHAPI_URL}
+      - run: echo ${GHTARGET_BRANCH}
       - persist_to_workspace:
           root: workspace
           paths:
@@ -38,17 +43,17 @@ jobs:
       - attach_workspace:
           at: ~/workspace
       - run: cat workspace/new-env-vars >> $BASH_ENV
-      - run: echo $TARGET_BRANCH
-      - checkout
-      - path-filtering/set-parameters:
-          base-revision: ${TARGET_BRANCH}
-          mapping: |
-            api/.* run-api-workflow true
-            app/.* run-app-workflow true
-            auth/.* run-auth-workflow true
-            gateway/.* run-gateway-workflow true
-      - continuation/continue:
-          configuration_path: .circleci/dynamic_config.yml
+      - run: echo $GHTARGET_BRANCH
+      #- checkout
+      #- path-filtering/set-parameters:
+      #    base-revision: ${TARGET_BRANCH}
+      #    mapping: |
+      #      api/.* run-api-workflow true
+      #      app/.* run-app-workflow true
+      #      auth/.* run-auth-workflow true
+      #      gateway/.* run-gateway-workflow true
+      #- continuation/continue:
+      #    configuration_path: .circleci/dynamic_config.yml
     
 
 workflows:
