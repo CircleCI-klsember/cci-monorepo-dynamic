@@ -46,7 +46,7 @@ jobs:
       - run: echo $GHTARGET_BRANCH
       - checkout
       - path-filtering/set-parameters:
-          base-revision: ${TARGET_BRANCH}
+          base-revision: ${GHTARGET_BRANCH}
           mapping: |
             api/.* run-api-workflow true
             app/.* run-app-workflow true
