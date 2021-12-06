@@ -16,8 +16,8 @@ jobs:
             if [[ -n ${CIRCLE_PULL_REQUEST} ]]; then
               echo 'export api_url=echo ${CIRCLE_PULL_REQUEST//github.com/api.github.com}' >> $BASH_ENV
               echo $api_url
-              echo 'export github_url="$api_url?access_token=$GITHUB_ACCESS_TOKEN"' >> $BASH_ENV
-              echo $github_url
+              //echo 'export github_url="$api_url?access_token=$GITHUB_ACCESS_TOKEN"' >> $BASH_ENV
+              //echo $github_url
               //export target_branch=$(curl "$url" | ./jq '.base.ref' | tr -d '"')
               //echo $target_branch
             fi
