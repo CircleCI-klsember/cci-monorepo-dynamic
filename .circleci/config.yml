@@ -15,7 +15,7 @@ jobs:
           command: |
             if [[ -n $CIRCLE_PULL_REQUEST ]]; then
               echo $CIRCLE_PULL_REQUEST
-              echo 'export GH_API_URL=$(echo $CIRCLE_PULL_REQUEST | sed -i "s|github.com/klsember/pull|api.github.com/repos/klsember/pulls|g")' >> $BASH_ENV
+              echo 'export GH_API_URL=$(echo $CIRCLE_PULL_REQUEST | sed -i "s|github.com/klsember/$CIRCLE_PROJECT_REPONAME/pull|api.github.com/repos/klsember/$CIRCLE_PROJECT_REPONAME/pulls|g")' >> $BASH_ENV
               echo 'export GITHUB_PR_URL="$GH_API_URL?access_token=$GITHUB_ACCESS_TOKEN"' >> $BASH_ENV
               source $BASH_ENV
               echo $GITHUB_PR_URL
