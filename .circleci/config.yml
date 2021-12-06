@@ -38,8 +38,9 @@ workflows:
             - GitHub
       - path-filtering/filter:
           name: main-filtering
-          base-revision: main
+          base-revision: ${TARGET_BRANCH}
           config-path: .circleci/dynamic_config.yml
+          workspace_path: workspace/new-env-vars
           mapping: |
             api/.* run-api-workflow true
             app/.* run-app-workflow true
@@ -53,8 +54,9 @@ workflows:
                 - develop
       - path-filtering/filter:
           name: develop-filtering
-          base-revision: develop
+          base-revision: ${TARGET_BRANCH}
           config-path: .circleci/dynamic_config.yml
+          workspace_path: workspace/new-env-vars
           mapping: |
             api/.* run-api-workflow true
             app/.* run-app-workflow true
