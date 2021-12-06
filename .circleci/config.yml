@@ -14,7 +14,7 @@ jobs:
           name: Get Target Branch
           command: |
             if [[ -n ${CIRCLE_PR_NUMBER} ]]; then
-              export url="https://api.github.com/repos/org/repo/pulls/$CIRCLE_PR_NUMBER?access_token=$GITHUB_ACCESS_TOKEN"
+              echo 'export url="https://api.github.com/repos/org/repo/pulls/$CIRCLE_PR_NUMBER?access_token=$GITHUB_ACCESS_TOKEN"' >> $BASH_ENV
               echo $url
               //export target_branch=$(curl "$url" | ./jq '.base.ref' | tr -d '"')
               //echo $target_branch
