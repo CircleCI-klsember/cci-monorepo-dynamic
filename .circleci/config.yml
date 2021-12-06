@@ -43,7 +43,9 @@ jobs:
       - attach_workspace:
           at: ~/workspace
       - run: cat /home/circleci/workspace/new-env-vars >> $BASH_ENV
-      - run: echo $GHTARGET_BRANCH
+      - run: | 
+          echo $GHTARGET_BRANCH
+          source $BASH_ENV
       - checkout
       - path-filtering/set-parameters:
           base-revision: $GHTARGET_BRANCH
