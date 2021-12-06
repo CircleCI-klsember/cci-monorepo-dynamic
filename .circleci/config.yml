@@ -22,8 +22,8 @@ workflows:
       #        only:
       #          - develop
       - path-filtering/filter:
-          name: develop-filtering
-          base-revision: test-changes
+          #name: develop-filtering
+          base-revision: develop
           config-path: .circleci/dynamic_config.yml
           mapping: |
             api/.* run-api-workflow true
