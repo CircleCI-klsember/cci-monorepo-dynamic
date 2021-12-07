@@ -125,6 +125,8 @@ jobs:
                 fp.write(json.dumps(mappings))
       - continuation/continue:
           configuration_path: .circleci/dynamic_config.yml
+          circleci_domain: circleci.com
+          parameters: /tmp/pipeline-parameters.json
     
 workflows:
   setup:
