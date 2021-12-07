@@ -34,7 +34,6 @@ workflows:
           name: main-filtering
           base-revision: main
           config-path: .circleci/dynamic_config.yml
-          workspace_path: workspace/new-env-vars
           mapping: |
             api/.* run-api-workflow true
             app/.* run-app-workflow true
@@ -50,7 +49,6 @@ workflows:
           name: develop-filtering
           base-revision: develop
           config-path: .circleci/dynamic_config.yml
-          workspace_path: workspace/new-env-vars
           mapping: |
             api/.* run-api-workflow true
             app/.* run-app-workflow true
