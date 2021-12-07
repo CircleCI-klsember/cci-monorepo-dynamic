@@ -17,19 +17,14 @@ jobs:
           command: |
             if [[ -n $CIRCLE_PULL_REQUEST ]]; then
               echo $CIRCLE_PULL_REQUEST
-              echo 'export GH_API_URL=$(echo $CIRCLE_PULL_REQUEST | sed "s|github.com/klsember/$CIRCLE_PROJECT_REPONAME/pull|api.github.com/repos/klsember/$CIRCLE_PROJECT_REPONAME/pulls|g")' >>workspace/new-env-vars
+              echo 'export GH_API_URL=$(echo $CIRCLE_PULL_REQUEST | sed "s|github.com/klsember/$CIRCLE_PROJECT_REPONAME/pull|api.github.com/repos/klsember/$CIRCLE_PROJECT_REPONAME/pulls|g")' >> $BASH_ENV
               source workspace/new-env-vars
               curl $GH_API_URL | jq '.base.ref' | tr -d '"' > Targetbranch.txt
-              echo 'export TARGET_BRANCH=$(<Targetbranch.txt)' >>workspace/new-env-vars
+              echo 'export TARGET_BRANCH=$(<Targetbranch.txt)' >> $BASH_ENV
             fi
-      - run: cat workspace/new-env-vars >> $BASH_ENV
       - run: echo ${GH_API_URL}
       - run: echo ${TARGET_BRANCH}
-      - persist_to_workspace:
-          root: workspace
-          paths:
-            - new-env-vars
-
+      
 workflows:
   setup:
     jobs:
@@ -38,7 +33,7 @@ workflows:
             - GitHub
       - path-filtering/filter:
           name: main-filtering
-          base-revision: ${TARGET_BRANCH}
+          base-revision: main
           config-path: .circleci/dynamic_config.yml
           workspace_path: workspace/new-env-vars
           mapping: |
@@ -54,7 +49,7 @@ workflows:
                 - develop
       - path-filtering/filter:
           name: develop-filtering
-          base-revision: ${TARGET_BRANCH}
+          base-revision: develop
           config-path: .circleci/dynamic_config.yml
           workspace_path: workspace/new-env-vars
           mapping: |
