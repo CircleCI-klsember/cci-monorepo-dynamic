@@ -54,7 +54,7 @@ jobs:
                   ['git', 'checkout', revision],
                   check=True
                 )
-              print os.environment.get('BASH_ENV')
+              print(os.environment.get('BASH_ENV'))
               output_path = os.environ.get('OUTPUT_PATH')
               head = os.environ.get('CIRCLE_SHA1')
               base_revision = os.environ.get('BASE_REVISION')
