@@ -26,6 +26,7 @@ jobs:
               echo 'export TARGET_BRANCH=$(<Targetbranch.txt)' >> $BASH_ENV; source $BASH_ENV
       - run: echo 'export BASE_REVISION=$TARGET_BRANCH' >> $BASH_ENV
       - run:
+      - run: python3 pip install envbash
           environment:
             MAPPING: |
               api/.* run-api-workflow true
@@ -40,21 +41,9 @@ jobs:
               import os
               import subprocess
               import json
-              
-              output = subprocess.check_output(os.environ.get('BASH_ENV'), shell=True)
-              # Parse the `printenv` output
-              exported_vars = dict(
-                  line.split("=", 1)
-                  for line in output.decode().splitlines()
-                  if line
-              )
-              # Filter to keep only variables that have new or changed values
-              changed_vars = {
-                  key: value
-                  for (key, value) in exported_vars.items()
-                  if value != os.environ.get(key)
-              }
-              pprint.pprint(changed_vars)
+              from envbash import load_envbash
+
+              load_envbash(os.environ.get('BASH_ENV'))
               print(os.environ.get('TARGET_BRANCH'))
       #- continuation/continue:
       #    configuration_path: .circleci/dynamic_config.yml
