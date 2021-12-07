@@ -42,7 +42,7 @@ jobs:
               
               print(os.environ.get('BASH_ENV', 'notfound'))
               file=open(os.environ.get('BASH_ENV', 'r').readlines()
-              print f[1]
+              print(f[1])
               print(os.environ.get('TARGET_BRANCH'))
       #- continuation/continue:
       #    configuration_path: .circleci/dynamic_config.yml
