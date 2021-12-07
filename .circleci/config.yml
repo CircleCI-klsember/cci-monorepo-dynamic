@@ -40,11 +40,11 @@ jobs:
               import os
               import subprocess
               
-              if os.path.isfile("$BASH_ENV"):
-                command = 'env -i sh -c "source $BASH_ENV && env"'
-                for line in subprocess.getoutput(command).split("\n"):
-                    key, value = line.split("=")
-                    os.environ[key]= value
+              
+              command = 'env -i sh -c "source $BASH_ENV && env"'
+              for line in subprocess.getoutput(command).split("\n"):
+                  key, value = line.split("=")
+                  os.environ[key]= value
               print(os.environ.get('BASH_ENV', 'notfound'))
               print(os.environ.get('TARGET_BRANCH'))
       #- continuation/continue:
