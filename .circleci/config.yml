@@ -23,8 +23,8 @@ jobs:
       - run: 
           command: |
               curl $GH_API_URL | jq '.base.ref' | tr -d '"' > Targetbranch.txt
-              echo 'export BASE_REVISION=$(<Targetbranch.txt)' >> $BASH_ENV; source $BASH_ENV
-      - run: echo $BASE_REVISION
+              echo 'export TARGET_BRANCH=$(<Targetbranch.txt)' >> $BASH_ENV; source $BASH_ENV
+      - run: echo 'export BASE_REVISION=$TARGET_BRANCH' >> $BASH_ENV
       - run:
           environment:
             MAPPING: |
