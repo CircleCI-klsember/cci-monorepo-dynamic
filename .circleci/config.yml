@@ -41,8 +41,13 @@ jobs:
               import json
               import os
               import re
-              import subprocess
-
+              import subprocess              
+              
+              source = 'source init_env'
+              dump = '/usr/bin/python -c "import os, json;print json.dumps(dict(os.environ))"'
+              pipe = subprocess.Popen(['/bin/bash', '-c', '%s && %s' %(source,dump)], stdout=subprocess.PIPE)
+              env = json.loads(pipe.stdout.read())
+              os.environ = env
               def checkout(revision):
                 """
                 Helper function for checking out a branch
