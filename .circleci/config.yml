@@ -46,7 +46,7 @@ jobs:
           ## This can be created in custom orb where TARGET_BRANCH is passed in when specifying BASH_ENV source
           command: |
             source $BASH_ENV
-            python3 ~/project/scripts/pr-create-parameters.py.py             
+            python3 ~/project/scripts/pr-create-parameters.py         
       - continuation/continue:
           configuration_path: .circleci/dynamic_config.yml
           circleci_domain: circleci.com
