@@ -23,47 +23,26 @@ jobs:
               curl $GH_API_URL | jq '.base.ref' | tr -d '"' > Targetbranch.txt
               echo 'export TARGET_BRANCH=$(<Targetbranch.txt)' >> $BASH_ENV
             fi
-      - run: 
-          name: Exporting Variables
-          command: |
-            echo "export GHAPI_URL=$GH_API_URL" >> workspace/new-env-vars
-            echo "export GHTARGET_BRANCH=$TARGET_BRANCH" >> workspace/new-env-vars
-      - run: cat workspace/new-env-vars >> $BASH_ENV
       - run: echo ${GHAPI_URL}
-      - run: echo ${GHTARGET_BRANCH}
-      - persist_to_workspace:
-          root: workspace
-          paths:
-            - new-env-vars
-  pr-pathfiltering:
-    docker:
-      - image: cimg/python:3.8
-    resource_class: small
-    steps:
-      - attach_workspace:
-          at: ~/workspace
-      - run: cat /home/circleci/workspace/new-env-vars >> $BASH_ENV
-      - run: | 
-          echo $GHTARGET_BRANCH
-          source $BASH_ENV
-      - checkout
-      - path-filtering/set-parameters:
-          base-revision: $GHTARGET_BRANCH
-          mapping: |
-            api/.* run-api-workflow true
-            app/.* run-app-workflow true
-            auth/.* run-auth-workflow true
-            gateway/.* run-gateway-workflow true
+      - run: echo ${TARGET_BRANCH}
+      - run:
+          environment:
+            BASE_REVISION: ${TARGET_BRANCH}
+            MAPPING: |
+              api/.* run-api-workflow true
+              app/.* run-app-workflow true
+              auth/.* run-auth-workflow true
+              gateway/.* run-gateway-workflow true
+            OUTPUT_PATH: "/tmp/pipeline-parameters.json"
+          name: Set parameters
+          shell: /usr/bin/env python3
+          command: .circleci/pr-create-parameters.py
       - continuation/continue:
           configuration_path: .circleci/dynamic_config.yml
     
-
 workflows:
   setup:
     jobs:
       - Get_Target_Branch:
           context:
             - GitHub
-      - pr-pathfiltering:
-          requires:
-            - Get_Target_Branch
