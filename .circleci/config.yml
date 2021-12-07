@@ -39,10 +39,22 @@ jobs:
               #!/usr/bin/env python3
               import os
               import subprocess
+              import json
               
-              print(os.environ.get('BASH_ENV', 'notfound'))
-              file=open(os.environ.get('BASH_ENV', 'r').readlines()
-              print(file[1])
+              output = subprocess.check_output(os.environ('BASH_ENV'), shell=True)
+              # Parse the `printenv` output
+              exported_vars = dict(
+                  line.split("=", 1)
+                  for line in output.decode().splitlines()
+                  if line
+              )
+              # Filter to keep only variables that have new or changed values
+              changed_vars = {
+                  key: value
+                  for (key, value) in exported_vars.items()
+                  if value != os.environ.get(key)
+              }
+              pprint.pprint(changed_vars)
               print(os.environ.get('TARGET_BRANCH'))
       #- continuation/continue:
       #    configuration_path: .circleci/dynamic_config.yml
