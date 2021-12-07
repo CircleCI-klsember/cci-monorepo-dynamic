@@ -20,13 +20,12 @@ jobs:
               echo 'export GH_API_URL=$(echo $CIRCLE_PULL_REQUEST | sed "s|github.com/klsember/$CIRCLE_PROJECT_REPONAME/pull|api.github.com/repos/klsember/$CIRCLE_PROJECT_REPONAME/pulls|g")' >> $BASH_ENV
               source $BASH_ENV
               curl $GH_API_URL | jq '.base.ref' | tr -d '"' > Targetbranch.txt
-              echo 'export TARGET_BRANCH=$(<Targetbranch.txt)' >> $BASH_ENV
+              echo 'export BASE_REVISION=$(<Targetbranch.txt)' >> $BASH_ENV
             fi
       - run: echo ${GHAPI_URL}
-      - run: echo ${TARGET_BRANCH}
+      - run: echo ${BASE_REVISION}
       - run:
           environment:
-            BASE_REVISION: ${TARGET_BRANCH}
             MAPPING: |
               api/.* run-api-workflow true
               app/.* run-app-workflow true
