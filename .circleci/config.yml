@@ -12,7 +12,6 @@ jobs:
       - image: cimg/base:stable
     resource_class: small
     steps:
-      - run: mkdir -p workspace
       - run:
           name: Get Target Branch
           command: |
@@ -25,6 +24,7 @@ jobs:
             fi
       - run: echo ${GHAPI_URL}
       - run: echo ${TARGET_BRANCH}
+      - checkout
       - run:
           environment:
             BASE_REVISION: ${TARGET_BRANCH}
@@ -36,7 +36,7 @@ jobs:
             OUTPUT_PATH: "/tmp/pipeline-parameters.json"
           name: Set parameters
           shell: /usr/bin/env python3
-          command: python .circleci/pr-create-parameters.py
+          command: .circleci/pr-create-parameters.py
       - continuation/continue:
           configuration_path: .circleci/dynamic_config.yml
     
