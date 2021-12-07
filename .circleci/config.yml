@@ -36,7 +36,7 @@ jobs:
             OUTPUT_PATH: "/tmp/pipeline-parameters.json"
           name: Set parameters
           shell: /usr/bin/env python3
-          command: <<include(.circleci/pr-create-parameters.py)>>
+          command: python .circleci/pr-create-parameters.py
       - continuation/continue:
           configuration_path: .circleci/dynamic_config.yml
     
