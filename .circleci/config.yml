@@ -41,7 +41,7 @@ jobs:
               import subprocess
               import json
               
-              output = subprocess.check_output(os.environ('BASH_ENV'), shell=True)
+              output = subprocess.check_output(os.environ.get('BASH_ENV'), shell=True)
               # Parse the `printenv` output
               exported_vars = dict(
                   line.split("=", 1)
