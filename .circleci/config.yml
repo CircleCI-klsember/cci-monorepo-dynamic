@@ -25,7 +25,10 @@ jobs:
               curl $GH_API_URL | jq '.base.ref' | tr -d '"' > Targetbranch.txt
               echo 'export TARGET_BRANCH=$(<Targetbranch.txt)' >> $BASH_ENV; source $BASH_ENV
       - run: echo 'export BASE_REVISION=$TARGET_BRANCH' >> $BASH_ENV
-      - run: python3 pip install envbash
+      - run: 
+          name: Install pip
+          shell: /usr/bin/env python3
+          command: pip install envbash
       - run: 
           environment:
             MAPPING: |
