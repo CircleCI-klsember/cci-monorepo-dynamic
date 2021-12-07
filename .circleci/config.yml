@@ -39,7 +39,7 @@ jobs:
               #!/usr/bin/env python3
               import os
            
-              print(os.environment.get('BASH_ENV', 'notfound'))
+              print(os.environ.get('BASH_ENV', 'notfound'))
              
       - continuation/continue:
           configuration_path: .circleci/dynamic_config.yml
