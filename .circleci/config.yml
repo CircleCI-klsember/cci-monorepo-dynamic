@@ -46,7 +46,7 @@ jobs:
                     key, value = line.split("=")
                     os.environ[key]= value
               print(os.environ.get('BASH_ENV', 'notfound'))
-              print(os.environ.get('TARGET_BRANCH')
+              print(os.environ.get('TARGET_BRANCH'))
       #- continuation/continue:
       #    configuration_path: .circleci/dynamic_config.yml
     
