@@ -38,11 +38,17 @@ jobs:
           command: |+
               #!/usr/bin/env python3
               import os
-           
+              import subprocess
+              
+              if os.path.isfile("$BASH_ENV"):
+                command = 'env -i sh -c "source $BASH_ENV && env"'
+                for line in subprocess.getoutput(command).split("\n"):
+                    key, value = line.split("=")
+                    os.environ[key]= value
               print(os.environ.get('BASH_ENV', 'notfound'))
              
-      - continuation/continue:
-          configuration_path: .circleci/dynamic_config.yml
+      #- continuation/continue:
+      #    configuration_path: .circleci/dynamic_config.yml
     
 workflows:
   setup:
