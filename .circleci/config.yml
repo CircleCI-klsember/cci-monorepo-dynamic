@@ -33,6 +33,7 @@ jobs:
               auth/.* run-auth-workflow true
               gateway/.* run-gateway-workflow true
             OUTPUT_PATH: "/tmp/pipeline-parameters.json"
+            BASE_REVISION: $BASE_REVISION
           name: Set parameters
           shell: /usr/bin/env python3
           command: |+
