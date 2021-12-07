@@ -39,12 +39,13 @@ jobs:
               #!/usr/bin/env python3
               import os
               import subprocess
+              import json              
               
-              
-              command = 'env -i sh -c "source $BASH_ENV && env"'
-              for line in subprocess.getoutput(command).split("\n"):
-                  key, value = line.split("=")
-                  os.environ[key]= value
+              source = 'source $BASH_ENV'
+              dump = '/usr/bin/python -c "import os, json;print json.dumps(dict(os.environ))"'
+              pipe = sp.Popen(['/bin/bash', '-c', '%s && %s' %(source,dump)], stdout=sp.PIPE)
+              env = json.loads(pipe.stdout.read())
+              os.environ = env
               print(os.environ.get('BASH_ENV', 'notfound'))
               print(os.environ.get('TARGET_BRANCH'))
       #- continuation/continue:
